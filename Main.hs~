@@ -43,7 +43,7 @@ removeNonUpperCase st = [ c | c <- st, c `elem` ['A'..'Z']]
 tuple1 = [(1,2),(3,4)]
 firstTuple = fst (head tuple1)
 sndTuple = snd (head tuple1)
-zippedLists = zip [1, 2, 3] [4, 5]
+zippedLists = zip [1, 2, 3] [4, 5, 6]
 
 oneFunction :: [Char] -> [Char]
 oneFunction xs = xs
@@ -92,3 +92,42 @@ tell [] = error "empty input"
 tell (x:[]) = show x
 tell (x:y:[]) = show y
 tell xs = show xs
+
+length' :: (Num b) => [a] -> b
+length' [] = 0
+length' (_:xs) = 1 + length' xs
+
+sum' :: (Num a) => [a] -> a
+sum' [] = 0
+sum' (x:xs) = x + sum' xs
+
+capital :: String -> String
+capital "" = "Ooops, empty String"
+capital all@(x:xs) = "The first letter of " ++ all ++ " is " ++ [x]
+
+bmiTell :: (RealFloat a) => a -> String
+bmiTell bmi
+   | bmi <= 18.5 = "You're underweight"
+   | bmi <= 25.0 = "You're normal"
+   | bmi <= 30.0 = "You're overweight"
+   | otherwise   = "You're a whale"
+
+max' :: (Ord a) => a -> a-> a
+max' a b
+   | a > b     = a
+   | otherwise = b
+
+compare' :: (Ord a) => a -> a -> Ordering
+a `compare'` b
+   | a < b     = LT
+   | a > b     = GT
+   | otherwise = EQ
+
+bmiTell' weight height
+   | bmi <= 18.5 = "You're underweight"
+   | bmi <= 25.0 = "You're normal"
+   | bmi <= 30.0 = "You're overweight"
+   | otherwise   = "You're a whale"
+   where bmi = weight / height ^ 2
+         a = 2
+         (b, c, d) = (1, 2, 3)

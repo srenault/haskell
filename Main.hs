@@ -131,3 +131,70 @@ bmiTell' weight height
    where bmi = weight / height ^ 2
          a = 2
          (b, c, d) = (1, 2, 3)
+
+cylinder :: (RealFloat a) => a -> a -> a
+cylinder r h =
+    let sideArea = 2 * pi * r * h
+        topArea = pi * r ^2
+    in sideArea + 2 * topArea -- let is an expression whereas where is a syntactic construct.
+
+-- 4 * (let a = 9 in a + 1) + 2
+-- [let square x = x * x in (square 5, square 3, square 2)]
+-- (let (a,b,c) = (1,2,3) in a + b + c) * 100
+
+calcBmis :: (RealFloat a) => [(a, a)] -> [a]
+calcBmis xs = [bmi | (w, h) <- xs, let bmi = w / h ^ 2]
+
+head'' :: [a] -> a
+head'' xs = case xs of [] -> error "No head for empty list"
+                       (x:_) -> x
+
+describeList :: [a] -> String
+describeList xs = "The list is " ++ case xs of [] -> "empty."
+                                               [x] -> "a sigleton list."
+                                               xs -> "a longer list."
+
+describeList' :: [a] -> String
+describeList' xs = "The list is " ++ what xs
+    where what [] = "empty."
+          what [x] = "a sigleton list"
+          what xs = "a longer list."
+
+maximum' :: (Ord a) => [a] -> a
+maximum' [] = error "maximum of empty list."
+maximum' [x] = x
+maximum' (x:xs)
+         | x > maxTail = x
+         | otherwise = maxTail
+         where maxTail = maximum' xs
+
+maximum'' :: (Ord a) => [a] -> a
+maximum'' [] = error "maximum of empty list"
+maximum'' [x] = x
+maximum'' (x:xs) = max x (maximum'' xs)
+
+replicate' :: (Num i, Ord i) => i -> a -> [a]
+replicate' n x
+    | n <= 0 = []
+    | otherwise = x:replicate' (n-1) x
+
+take' :: (Num i, Ord i) => i -> [a] -> [a]
+take' n _
+    | n <= 0 = []
+take' _ [] = []
+take' n (x:xs) = x : take' (n-1) xs
+
+reverse' :: [a] -> [a]
+reverse' [] = []
+reverse' (x:xs) = xs ++ [x]
+
+zip' :: [a] -> [b] -> [(a, b)]
+zip' _ [] = []
+zip' [] _ = []
+zip' (x:xs) (y:ys) = (x,y):zip' xs ys
+
+elem'' :: (Eq a) => a -> [a] -> Bool
+elem'' a [] = False
+elem'' a (x:xs)
+    | a == x = True
+    | otherwise = a `elem''` xs
